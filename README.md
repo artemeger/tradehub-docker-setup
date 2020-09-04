@@ -1,3 +1,5 @@
+<img src=https://blog.switcheo.network/content/images/size/w2000/2020/03/Switcheo-TradeHub.png></img>
+
 ### Important commands
 
 #### Build from Scratch & Start detached
