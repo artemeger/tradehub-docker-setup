@@ -1,0 +1,6 @@
+.idea
+*.xml
+validator/key
+validator/logs
+sentry/key
+sentry/logs

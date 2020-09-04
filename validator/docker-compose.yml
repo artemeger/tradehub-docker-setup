@@ -1,0 +1,43 @@
+version: '3.5'
+
+volumes:
+  tradehub-standalone-validator-volume:
+
+services:
+  tradehub-standalone-validator:
+    image: tradehub-standalone-validator
+    container_name: tradehub-standalone-validator
+    build:
+      context: node
+      args:
+        NODE_VERSION : "${NODE_VERSION}"
+        NET_VERSION : "${NET_VERSION}"
+        CHAIN_ID: "${CHAIN_ID}"
+        MONIKER : "${VALIDATOR_MONIKER}"
+        NODE_IP: "${VALIDATOR_BIND_IP}"
+        PERSISTENT_PEER: "${PERSISTENT_PEER_TESTNET}"
+        PERSISTENT_PEER_API: "${PERSISTENT_PEER_TESTNET_API}"
+        PRIVATE_PEERS: "${PRIVATE_PEERS}"
+        APP_ENV: "${APP_ENV}"
+        NODE_TIMEOUT: "${NODE_TIMEOUT}"
+        TENDERMINT_SERVER_HOST: "${TENDERMINT_SERVER_HOST}"
+        TENDERMINT_SERVER_PORT: "${TENDERMINT_SERVER_PORT}"
+        COSMOS_REST_SERVER_HOST: "${COSMOS_REST_SERVER_HOST}"
+        COSMOS_REST_SERVER_PORT: "${COSMOS_REST_SERVER_PORT}"
+        API_REST_PORT: "${API_REST_PORT}"
+        LOG_TO_FILE: "${LOG_TO_FILE}"
+        LOG_LEVEL: "${LOG_LEVEL}"
+        SWTH_UPGRADER: "${SWTH_UPGRADER}"
+        SEND_ETH_TXNS: "${SEND_ETH_TXNS}"
+        WALLET_PASSWORD: "${WALLET_PASSWORD}"
+    ports:
+        - "${TENDERMINT_P2P_PORT}:${TENDERMINT_P2P_PORT}"
+    expose:
+        - "${TENDERMINT_SERVER_PORT}"
+    volumes:
+        - ./key/val_key:/root/.key/val_key
+        - ./key/node_key.json:/root/.switcheod/config/node_key.json
+        - ./key/priv_validator_key.json:/root/.switcheod/config/priv_validator_key.json
+        - ./node/init.sh:/root/init.sh
+        - ./logs/validator:/root/.switcheo_logs/
+        - tradehub-standalone-validator-volume:/root
