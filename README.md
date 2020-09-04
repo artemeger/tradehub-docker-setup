@@ -15,6 +15,6 @@ docker-compose start
 #### Stop the compose stack
 docker-compose stop
 #### See container logs
-docker logs -f '<container-name>' --tail 10
+docker logs -f (container-name) --tail 10
 #### Bash on the container
-docker exec -it '<container-name>' /bin/bash
+docker exec -it (container-name) /bin/bash
