@@ -9,4 +9,4 @@ done
 
 printf "$wallet\n$wallet\n$wallet\n" | switcheocli keys import --keyring-backend file val_key /root/.key/val_key
 
-WALLET_PASSWORD=$wallet switcheod start --all
+WALLET_PASSWORD=$wallet switcheod start-all -a
