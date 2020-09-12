@@ -39,5 +39,5 @@ services:
         - ./key/node_key.json:/root/.switcheod/config/node_key.json
         - ./key/priv_validator_key.json:/root/.switcheod/config/priv_validator_key.json
         - ./node/init.sh:/root/init.sh
-        - ./logs/sentry:/root/.switcheod/logs/
+        - ./logs/validator:/root/.switcheod/logs/
         - tradehub-standalone-validator-volume:/root
