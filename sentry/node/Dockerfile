@@ -84,6 +84,6 @@ RUN sed -i -e "s/persistent_peers = \"\"/persistent_peers = \"${PERSISTENT_PEER}
 RUN sed -i -e "s/private_peer_ids = \"\"/private_peer_ids = \"${PRIVATE_PEERS}\"/g" ~/.switcheod/config/config.toml
 
 RUN curl -s "${PERSISTENT_PEER_API}/genesis" | jq '.result.genesis' > ~/.switcheod/config/genesis.json
-RUN mkdir -p ~/.switcheo_logs/old ~/.switcheo_migrations/migrate ~/.switcheo_config
+RUN mkdir -p ~/.switcheod/logs/old ~/.switcheod/migrations/migrate ~/.switcheod/config/oracles
 
 ENTRYPOINT sh /root/init.sh -w ${WALLET_PASSWORD}
