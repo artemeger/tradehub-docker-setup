@@ -17,8 +17,8 @@ services:
         CHAIN_ID: "${CHAIN_ID}"
         MONIKER : "${SENTRY_MONIKER}"
         NODE_IP: "${SENTRY_BIND_IP}"
-        PERSISTENT_PEER: "${PERSISTENT_PEER_TESTNET}"
-        PERSISTENT_PEER_API: "${PERSISTENT_PEER_TESTNET_API}"
+        PERSISTENT_PEER: "${PERSISTENT_PEER_MAINNET}"
+        PERSISTENT_PEER_API: "${PERSISTENT_PEER_MAINNET_API}"
         PRIVATE_PEERS: "${PRIVATE_PEERS}"
         APP_ENV: "${APP_ENV}"
         NODE_TIMEOUT: "${NODE_TIMEOUT}"
@@ -39,23 +39,23 @@ services:
         SEND_ETH_TXNS: "${SEND_ETH_TXNS}"
         WALLET_PASSWORD: "${WALLET_PASSWORD}"
     ports:
-        - "${REST_WS_PORT}:${REST_WS_PORT}"
-        - "${TENDERMINT_SERVER_PORT}:${TENDERMINT_SERVER_PORT}"
-        - "${TENDERMINT_P2P_PORT}:${TENDERMINT_P2P_PORT}"
+      - "${TENDERMINT_P2P_PORT}:${TENDERMINT_P2P_PORT}"
     expose:
-        - "${API_REST_PORT}"
-        - "${COSMOS_REST_SERVER_PORT}"
+      - "${API_REST_PORT}"
+      - "${REST_WS_PORT}"
+      - "${TENDERMINT_SERVER_PORT}"
+      - "${COSMOS_REST_SERVER_PORT}"
     depends_on:
-        - tradehub-redis
-        - tradehub-reverse-proxy
-        - tradehub-postgresql
+      - tradehub-redis
+      - tradehub-reverse-proxy
+      - tradehub-postgresql
     volumes:
-        - ./key/val_key:/root/.key/val_key
-        - ./key/node_key.json:/root/.switcheod/config/node_key.json
-        - ./key/priv_validator_key.json:/root/.switcheod/config/priv_validator_key.json
-        - ./logs/sentry:/root/.switcheod/logs/
-        - ./node/init.sh:/root/init.sh
-        - tradehub-sentry-volume:/root
+      - ./key/val_key:/root/.key/val_key
+      - ./key/node_key.json:/root/.switcheod/config/node_key.json
+      - ./key/priv_validator_key.json:/root/.switcheod/config/priv_validator_key.json
+      - ./logs/sentry:/root/.switcheo_logs/
+      - ./node/init.sh:/root/init.sh
+      - tradehub-sentry-volume:/root
     networks:
       tradehub:
         ipv4_address: "${SENTRY_IP}"
@@ -65,6 +65,8 @@ services:
     container_name: tradehub-reverse-proxy
     ports:
       - "${REVERSE_PROXY_PORT}:${REVERSE_PROXY_PORT}"
+      - "${TENDERMINT_SERVER_PORT}:${TENDERMINT_SERVER_PORT}"
+      - "${REST_WS_PORT}:${REST_WS_PORT}"
     volumes:
       - ../nginx:/etc/nginx/conf.d
     networks:
@@ -79,7 +81,7 @@ services:
     expose:
       - "${REDIS_PORT}"
     volumes:
-    - tradehub-redis-volume:/data
+      - tradehub-redis-volume:/data
     command: redis-server --appendonly yes
     networks:
       tradehub:
@@ -96,7 +98,7 @@ services:
     expose:
       - "${POSTGRES_PORT}"
     volumes:
-    - tradehub-postgresql-volume:/var/lib/postgresql/data
+      - tradehub-postgresql-volume:/var/lib/postgresql/data
     networks:
       tradehub:
         ipv4_address: "${POSTGRES_IP}"
