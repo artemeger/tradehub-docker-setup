@@ -17,8 +17,8 @@ services:
         CHAIN_ID: "${CHAIN_ID}"
         MONIKER : "${SENTRY_MONIKER}"
         NODE_IP: "${SENTRY_BIND_IP}"
-        PERSISTENT_PEER: "${PERSISTENT_PEER_TESTNET}"
-        PERSISTENT_PEER_API: "${PERSISTENT_PEER_TESTNET_API}"
+        PERSISTENT_PEER: "${PERSISTENT_PEER_MAINNET}"
+        PERSISTENT_PEER_API: "${PERSISTENT_PEER_MAINNET_API}"
         PRIVATE_PEERS: "${PRIVATE_PEERS}"
         APP_ENV: "${APP_ENV}"
         NODE_TIMEOUT: "${NODE_TIMEOUT}"
@@ -39,11 +39,11 @@ services:
         SEND_ETH_TXNS: "${SEND_ETH_TXNS}"
         WALLET_PASSWORD: "${WALLET_PASSWORD}"
     ports:
-        - "${REST_WS_PORT}:${REST_WS_PORT}"
-        - "${TENDERMINT_SERVER_PORT}:${TENDERMINT_SERVER_PORT}"
         - "${TENDERMINT_P2P_PORT}:${TENDERMINT_P2P_PORT}"
     expose:
         - "${API_REST_PORT}"
+        - "${REST_WS_PORT}"
+        - "${TENDERMINT_SERVER_PORT}"
         - "${COSMOS_REST_SERVER_PORT}"
     depends_on:
         - tradehub-redis
@@ -65,6 +65,8 @@ services:
     container_name: tradehub-reverse-proxy
     ports:
       - "${REVERSE_PROXY_PORT}:${REVERSE_PROXY_PORT}"
+      - "${TENDERMINT_SERVER_PORT}:${TENDERMINT_SERVER_PORT}"
+      - "${REST_WS_PORT}:${REST_WS_PORT}"
     volumes:
       - ../nginx:/etc/nginx/conf.d
     networks:
