@@ -53,9 +53,11 @@ services:
       - ./key/val_key:/root/.key/val_key
       - ./key/node_key.json:/root/.switcheod/config/node_key.json
       - ./key/priv_validator_key.json:/root/.switcheod/config/priv_validator_key.json
-      - ./logs/sentry:/root/.switcheo_logs/
+      - ./logs/sentry:/root/.switcheod/logs
+      - ../logrotate/switcheo_logs:/etc/logrotate.d/switcheo_logs
       - ./node/init.sh:/root/init.sh
       - tradehub-sentry-volume:/root
+    restart: unless-stopped
     networks:
       tradehub:
         ipv4_address: "${SENTRY_IP}"
@@ -69,6 +71,7 @@ services:
       - "${REST_WS_PORT}:${REST_WS_PORT}"
     volumes:
       - ../nginx:/etc/nginx/conf.d
+    restart: unless-stopped
     networks:
       tradehub:
         ipv4_address: "${NGINX_IP}"
@@ -83,6 +86,7 @@ services:
     volumes:
       - tradehub-redis-volume:/data
     command: redis-server --appendonly yes
+    restart: unless-stopped
     networks:
       tradehub:
         ipv4_address: "${REDIS_IP}"
@@ -99,6 +103,7 @@ services:
       - "${POSTGRES_PORT}"
     volumes:
       - tradehub-postgresql-volume:/var/lib/postgresql/data
+    restart: unless-stopped
     networks:
       tradehub:
         ipv4_address: "${POSTGRES_IP}"

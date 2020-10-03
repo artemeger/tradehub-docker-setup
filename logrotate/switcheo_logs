@@ -1,0 +1,9 @@
+$HOME/.switcheod/logs/*.log ${HOME}/.switcheod/logs/*.err {
+    olddir ${HOME}/.switcheod/logs/old
+    daily
+    missingok
+    rotate 30
+    compress
+    copytruncate
+    notifempty
+}
