@@ -52,11 +52,18 @@ RUN apt-get -yq update && \
     curl \
     jq \
     sed \
+    nano \
+    psmisc \
     unzip && \
     apt-get clean
 
 RUN curl -L https://github.com/Switcheo/tradehub/releases/download/${NODE_VERSION}/install-${NET_VERSION}.tar.gz | tar -xz
-RUN cd install-${NET_VERSION} && cp bin/switcheod bin/switcheocli /usr/local/bin && cd - && rm -rf install-${NET_VERSION}
+RUN cd install-${NET_VERSION} && \
+    cp bin/switcheocli /usr/local/bin && \
+    cp bin/switcheod /usr/local/bin && \
+    cp bin/cosmovisor /usr/local/bin && \
+    cd - && \
+    rm -rf install-${NET_VERSION}
 
 RUN switcheod init ${MONIKER} --chain-id ${CHAIN_ID}
 RUN switcheocli config chain-id ${CHAIN_ID} && switcheocli config output json && switcheocli config indent true && switcheocli config trust-node true
@@ -72,6 +79,6 @@ RUN sed -i -e "s/persistent_peers = \"\"/persistent_peers = \"${PERSISTENT_PEER}
 RUN sed -i -e "s/private_peer_ids = \"\"/private_peer_ids = \"${PRIVATE_PEERS}\"/g" ~/.switcheod/config/config.toml
 
 RUN curl -s "${PERSISTENT_PEER_API}/genesis" | jq '.result.genesis' > ~/.switcheod/config/genesis.json
-RUN mkdir -p ~/.switcheo_logs/old ~/.switcheo_migrations/migrate ~/.switcheo_config
+RUN mkdir -p ~/.switcheo_logs/old ~/.switcheod/logs/old ~/.switcheo_migrations/migrate ~/.switcheo_config
 
 ENTRYPOINT sh /root/init.sh -w ${WALLET_PASSWORD}
