@@ -63,6 +63,7 @@ RUN apt-get -yq update && \
     curl \
     jq \
     sed \
+    rsync \
     nano \
     psmisc \
     unzip && \
