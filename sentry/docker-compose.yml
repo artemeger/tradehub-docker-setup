@@ -71,8 +71,8 @@ services:
     container_name: tradehub-reverse-proxy
     ports:
       - "${REVERSE_PROXY_PORT}:${REVERSE_PROXY_PORT}"
-      - "${TENDERMINT_SERVER_PORT}:${TENDERMINT_SERVER_PORT}"
-      - "${REST_WS_PORT}:${REST_WS_PORT}"
+      - "${NGINX_TENDERMINT_SERVER_PORT}:${NGINX_TENDERMINT_SERVER_PORT}"
+      - "${NGINX_COSMOS_REST_SERVER_PORT}:${NGINX_COSMOS_REST_SERVER_PORT}"
     volumes:
       - ../nginx:/etc/nginx/conf.d
     restart: unless-stopped
