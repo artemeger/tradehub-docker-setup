@@ -59,6 +59,7 @@ RUN apt-get -yq update && \
     apt-transport-https \
     ca-certificates \
     aptitude \
+    build-essential cmake \
     wget \
     curl \
     jq \
@@ -68,6 +69,23 @@ RUN apt-get -yq update && \
     psmisc \
     unzip && \
     apt-get clean
+
+RUN wget https://github.com/google/leveldb/archive/1.22.tar.gz && \
+      tar -zxvf 1.22.tar.gz && \
+      cd leveldb-1.22/ && \
+      cp -r include/leveldb /usr/local/include/ && \
+      mkdir -p build && cd build && \
+      cmake .. \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+      -DLEVELDB_BUILD_TESTS=ON \
+      -DLEVELDB_INSTALL=ON \
+      -DBUILD_SHARED_LIBS=ON && \
+      make && \
+      cp -r lib* /usr/local/lib/ && \
+      ldconfig && \
+      cd ../.. && rm -f 1.22.tar.gz
 
 RUN curl -L https://github.com/Switcheo/tradehub/releases/download/${NODE_VERSION}/install-${NET_VERSION}.tar.gz | tar -xz
 RUN cd install-${NET_VERSION} && \
